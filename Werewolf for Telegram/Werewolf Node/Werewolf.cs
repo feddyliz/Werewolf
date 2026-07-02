@@ -3287,6 +3287,10 @@ namespace Werewolf_Node
                     voteWolves = wolves.Where(x => !x.Drunk && !x.IsDead);
                     if (!voteWolves.Any()) break; //if wolf dies from first choice, and was alone...
                     var target = Players.FirstOrDefault(x => x.Id == choice);
+                    // The whole pack leaves to hunt, but VisitPlayer only marks the single random visitor below.
+                    // Mark every hunting wolf as having left so a Chef tracking any pack member sees them away.
+                    foreach (var huntingWolf in voteWolves)
+                        huntingWolf.VisitingSameNightCount++;
                     IPlayer visitorWuff;
                     try
                     {
